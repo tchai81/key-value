@@ -105,9 +105,11 @@ class KeyValueGetTest extends TestCase {
         $timestampToValidate = strtotime("+1 minutes", strtotime($dateAtToValidate));
 
         //check whether db has rows with the same exact timestamp. If so, always retrieve the value based on latest Id
-        $valuesToValidate = array_filter($dbKeyValues, function($dbKeyValue) use ($dateAtToValidate){
-            return $dbKeyValue['created_at'] == $dateAtToValidate;
+        $valuesToValidate = array_filter($dbKeyValues, function($dbKeyValue) use ($timestampToValidate){
+            return strtotime($dbKeyValue['created_at']) <= $timestampToValidate;
         });
+
+        $db = Key::with('values')->get()->toArray();
 
         $this->json('GET', "api/key-value/{$this->dbKey->name}?timestamp={$timestampToValidate}")
             ->assertStatus(200)
