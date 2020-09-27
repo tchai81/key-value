@@ -3,9 +3,12 @@
 namespace App\Services;
 
 use App\Repositories\KeyRepository;
+use App\Traits\FormatDates;
 use DateTime;
 
 class KeyValueService {
+
+    use FormatDates;
 
     public function __construct(KeyRepository $repo) {
       $this->repo = $repo;
@@ -36,8 +39,7 @@ class KeyValueService {
       $dbKey = $this->getByKey($key);
       if (!empty($dbKey)) {
         if ($timestamp) {
-          $dateTime = new DateTime();
-          $dateTime->setTimestamp($timestamp);
+          $dateTime = $this->convertTimestampToDatetime($timestamp);
           $val = $this->getValByKeyAndDateTime($dbKey, $dateTime);
         } else {
           $val = $this->getLatestValByKey($dbKey);
