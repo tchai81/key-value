@@ -14,7 +14,7 @@ class KeyValueCreateTest extends TestCase
     /**
      * Test creation of a brand new key
      */
-    public function testCreateValueWithNewKey() {
+    public function testCreateValWithNewKey() {
         //data to be saved for testing
         $payload = [
             'key' => 'value'
@@ -40,7 +40,7 @@ class KeyValueCreateTest extends TestCase
     /**
      * Test creation based on an existing key
      */
-    public function testCreateValueWithExistingKey() {
+    public function testCreateValWithExistingKey() {
         //insert some data into db
         $dbKeys = Key::factory()->has(KeyValue::factory()->count(3), 'values')->create();
         list('name' => $keyToSave) = $dbKeys->toArray();
@@ -68,7 +68,7 @@ class KeyValueCreateTest extends TestCase
     /**
      * Test creation if supplied with empty payload
      */
-    public function testCreateValueWithInvalidPayloadSample1() {
+    public function testCreateValWithInvalidPayloadSample1() {
         $this->json('POST', 'api/key-value', [])
             ->assertStatus(422)
             ->assertJson([
@@ -79,7 +79,7 @@ class KeyValueCreateTest extends TestCase
     /**
      * Test creation if supplied with empty value
      */
-    public function testCreateValueWithInvalidPayloadSample2() {
+    public function testCreateValWithInvalidPayloadSample2() {
         $this->json('POST', 'api/key-value', ['test'=>''])
             ->assertStatus(422)
             ->assertJson([
@@ -90,7 +90,7 @@ class KeyValueCreateTest extends TestCase
     /**
      * Test creation if supplied with empty key
      */
-    public function testCreateValueWithInvalidPayloadSample3() {
+    public function testCreateValWithInvalidPayloadSample3() {
         $this->json('POST', 'api/key-value', [''=>'test'])
             ->assertStatus(422)
             ->assertJson([
