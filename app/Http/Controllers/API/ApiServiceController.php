@@ -32,7 +32,7 @@ class ApiServiceController extends Controller {
      * @param  string $message
      * @return Illuminate\Support\Facades\Response
      */
-    public function respondNotFound($message = "Not Found!") {
+    public function respondNotFound($message = 'Not Found!') {
         return $this->setStatusCode(404)->respondWithMessage($message);
     }
 
@@ -41,7 +41,7 @@ class ApiServiceController extends Controller {
      * @param  string $message
      * @return Illuminate\Support\Facades\Response
      */
-    public function respondForbidden($message = "Not Authorized!") {
+    public function respondForbidden($message = 'Not Authorized!') {
         return $this->setStatusCode(403)->respondWithMessage($message);
     }
 
@@ -52,7 +52,7 @@ class ApiServiceController extends Controller {
      */
     public function respondWithMessage($message) {
         return $this->respondWithJson([
-            "message" => $message
+            'message' => $message
         ]);
     }
 

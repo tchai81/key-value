@@ -48,7 +48,7 @@ class KeyValueController extends ApiServiceController {
       $timestamp = Request::get('timestamp');
       $val = $this->service->getVal($key, $timestamp);
       if (!empty($val)) {
-        return $this->respondWithJson(["result" => $val]);
+        return $this->respondWithJson(['result' => $val]);
       }
       return $this->respondNotFound("Key - {$key} not found.");
     }
