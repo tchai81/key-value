@@ -46,7 +46,9 @@ class KeyRepository {
    */
     public function getLatestValByKey($key) {
         $key = $this->checkAndConvertKeyToModel($key);
-        return $key->values()->orderBy('created_at', 'DESC')->first();
+        return $key->values()
+                    ->orderBy('created_at', 'DESC')
+                    ->orderBy('id', 'DESC')->first();
     }
 
    /**

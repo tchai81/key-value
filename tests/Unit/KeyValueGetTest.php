@@ -58,7 +58,8 @@ class KeyValueGetTest extends TestCase {
 
         // sort & get the value based on latest timestamp
         $timestamps = array_column($dbKeyVals, 'created_at');
-        array_multisort($timestamps, SORT_DESC, $dbKeyVals);
+        $ids = array_column($dbKeyVals, 'id');
+        array_multisort($timestamps, SORT_DESC, $ids, SORT_DESC, $dbKeyVals);
 
         $this->json('GET', "api/key-value/{$this->dbKey->name}")
             ->assertStatus(200)
