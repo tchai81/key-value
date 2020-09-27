@@ -61,7 +61,7 @@ class KeyValueGetTest extends TestCase {
 
         $this->json('GET', "api/key-value/{$this->dbKey->name}")
             ->assertStatus(200)
-            ->assertJson(['result' => $dbKeyValues[0]['value']]);
+            ->assertJson(['result' => reset($dbKeyValues)['value']]);
     }
 
     /**
@@ -70,35 +70,47 @@ class KeyValueGetTest extends TestCase {
     public function testGetValueByExactTimestampAndKey() {
         $dbKeyValues = $this->dbKey->values->toArray();
 
-        // sort & get the value based on latest timestamp
+        // sort & get the value based on latest timestamp & Id
         $timestamps = array_column($dbKeyValues, 'created_at');
-        array_multisort($timestamps, SORT_DESC, $dbKeyValues);
+        $ids = array_column($dbKeyValues, 'id');
+        array_multisort($timestamps, SORT_DESC, $ids, SORT_DESC, $dbKeyValues);
 
         $indexToValidate = rand(0,2);
+        $dateAtToValidate = $dbKeyValues[$indexToValidate]['created_at'];
+        $timestampToValidate = strtotime($dateAtToValidate);
 
-        $timestampToValidate = strtotime($dbKeyValues[$indexToValidate]['created_at']);
-
+        //check whether db has rows with the same exact timestamp. If so, always retrieve the value based on latest Id
+        $valuesToValidate = array_filter($dbKeyValues, function($dbKeyValue) use ($dateAtToValidate){
+            return $dbKeyValue['created_at'] == $dateAtToValidate;
+        });
+        
         $this->json('GET', "api/key-value/{$this->dbKey->name}?timestamp={$timestampToValidate}")
             ->assertStatus(200)
-            ->assertJson(['result' => $dbKeyValues[$indexToValidate]['value']]);   
+            ->assertJson(['result' => reset($valuesToValidate)['value']]);   
     }
 
     /**
      * Test to get value by random timestamp
      */
-    public function testGetValueByTimestampAndKey() {
+    public function testGetValueByRandomTimestampAndKey() {
         $dbKeyValues = $this->dbKey->values->toArray();
 
-        // sort & get the value based on latest timestamp
+        // sort & get the value based on latest timestamp & Id
         $timestamps = array_column($dbKeyValues, 'created_at');
-        array_multisort($timestamps, SORT_DESC, $dbKeyValues);
+        $ids = array_column($dbKeyValues, 'id');
+        array_multisort($timestamps, SORT_DESC, $ids, SORT_DESC, $dbKeyValues);
 
         $indexToValidate = rand(0,2);
+        $dateAtToValidate = $dbKeyValues[$indexToValidate]['created_at'];
+        $timestampToValidate = strtotime("+1 minutes", strtotime($dateAtToValidate));
 
-        $timestampToValidate = strtotime("+1 minute", strtotime($dbKeyValues[$indexToValidate]['created_at']));
+        //check whether db has rows with the same exact timestamp. If so, always retrieve the value based on latest Id
+        $valuesToValidate = array_filter($dbKeyValues, function($dbKeyValue) use ($dateAtToValidate){
+            return $dbKeyValue['created_at'] == $dateAtToValidate;
+        });
 
         $this->json('GET', "api/key-value/{$this->dbKey->name}?timestamp={$timestampToValidate}")
             ->assertStatus(200)
-            ->assertJson(['result' => $dbKeyValues[$indexToValidate]['value']]);   
+            ->assertJson(['result' => reset($valuesToValidate)['value']]);   
     }
 }
