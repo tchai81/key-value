@@ -20,4 +20,4 @@ Route::middleware('auth:api')->post('/user', function (Request $request) {
 });
 
 Route::post('/key-value', [KeyValueController::class, 'create']);
-Route::get('/key-value/{key}', [KeyValueController::class, 'getLatestOrByTimestamp']);
+Route::get('/key-value/{key}', [KeyValueController::class, 'get']);
