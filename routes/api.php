@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\ObjectController;
+use App\Http\Controllers\API\KeyValueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +19,5 @@ Route::middleware('auth:api')->post('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/object', [ObjectController::class, 'updateOrCreate']);
-Route::get('/object/{mykey}', [ObjectController::class, 'get']);
-Route::get('/object/{mykey}?timestamp={timestamp}', [ObjectController::class, 'getByTimestamp']);
+Route::post('/key-value', [KeyValueController::class, 'create']);
+Route::get('/key-value/{key}', [KeyValueController::class, 'getLatestOrByTimestamp']);
