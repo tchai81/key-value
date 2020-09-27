@@ -13,7 +13,7 @@ class KeyRepository {
    * @param String  $value
    * @return Boolean
    */
-    public function createWithValue($key, $value) {
+    public function createWithVal($key, $value) {
         return Key::create(['name' => $key])->values()->create(['value' => $value]);
     }
 
@@ -24,18 +24,18 @@ class KeyRepository {
    * @param String  $value
    * @return Boolean
    */
-    public function createValue($key, $value) {
+    public function createVal($key, $value) {
         $key = $this->checkAndConvertKeyToModel($key);
         return $key->values()->create(['value' => $value]);
     }
 
    /**
    * Retrieve key model from db based on a given name
-   * @param String  $name
+   * @param String  $key
    * @return Illuminate\Database\Eloquent\Model;
    */
-    public function getByName($name) {
-        return Key::where('name', $name)->first();
+    public function getByKey($key) {
+        return Key::where('name', $key)->first();
     }
 
    /**
@@ -44,7 +44,7 @@ class KeyRepository {
    * @param Model $key
    * @return Illuminate\Database\Eloquent\Model;
    */
-    public function getLatestValueByName($key) {
+    public function getLatestValByKey($key) {
         $key = $this->checkAndConvertKeyToModel($key);
         return $key->values()->orderBy('created_at', 'DESC')->first();
     }
@@ -56,7 +56,7 @@ class KeyRepository {
    * @param DateTime $dateTime
    * @return Illuminate\Database\Eloquent\Model;
    */
-    public function getValueByNameAndDateTime($key, $dateTime) {
+    public function getValByKeyAndDateTime($key, $dateTime) {
         $key = $this->checkAndConvertKeyToModel($key);
         return $key->values()
                     ->where('created_at', '<=', $dateTime)
@@ -72,7 +72,7 @@ class KeyRepository {
    */
     private function checkAndConvertKeyToModel($key) {
         if (!$key instanceof Model) {
-            $key = $this->getByName($key);
+            $key = $this->getByKey($key);
         }
         return $key;
     }
