@@ -109,8 +109,6 @@ class KeyValueGetTest extends TestCase {
             return strtotime($dbKeyValue['created_at']) <= $timestampToValidate;
         });
 
-        $db = Key::with('values')->get()->toArray();
-
         $this->json('GET', "api/key-value/{$this->dbKey->name}?timestamp={$timestampToValidate}")
             ->assertStatus(200)
             ->assertJson(['result' => reset($valuesToValidate)['value']]);   
