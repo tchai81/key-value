@@ -19,7 +19,7 @@ class KeyValueGetTest extends TestCase {
     public function setUp() : void {
         parent::setUp(); 
         //mock data
-        $this->key = Key::factory()->has(KeyValue::factory()->count(3), 'values')->create();
+        $this->dbKey = Key::factory()->has(KeyValue::factory()->count(3), 'values')->create();
     }
 
     /**
@@ -53,52 +53,52 @@ class KeyValueGetTest extends TestCase {
      */
     public function testGetLatestValueByKey() {
 
-        $keyValues = $this->key->values->toArray();
+        $dbKeyValues = $this->dbKey->values->toArray();
 
         // sort & get the value based on latest timestamp
-        $timestamps = array_column($keyValues, 'created_at');
-        array_multisort($timestamps, SORT_DESC, $keyValues);
+        $timestamps = array_column($dbKeyValues, 'created_at');
+        array_multisort($timestamps, SORT_DESC, $dbKeyValues);
 
-        $this->json('GET', "api/key-value/{$this->key->name}")
+        $this->json('GET', "api/key-value/{$this->dbKey->name}")
             ->assertStatus(200)
-            ->assertJson(['result' => $keyValues[0]['value']]);
+            ->assertJson(['result' => $dbKeyValues[0]['value']]);
     }
 
     /**
      * Test to get value by exact timestamp
      */
     public function testGetValueByExactTimestampAndKey() {
-        $keyValues = $this->key->values->toArray();
+        $dbKeyValues = $this->dbKey->values->toArray();
 
         // sort & get the value based on latest timestamp
-        $timestamps = array_column($keyValues, 'created_at');
-        array_multisort($timestamps, SORT_DESC, $keyValues);
+        $timestamps = array_column($dbKeyValues, 'created_at');
+        array_multisort($timestamps, SORT_DESC, $dbKeyValues);
 
         $indexToValidate = rand(0,2);
 
-        $timestampToValidate = strtotime($keyValues[$indexToValidate]['created_at']);
+        $timestampToValidate = strtotime($dbKeyValues[$indexToValidate]['created_at']);
 
-        $this->json('GET', "api/key-value/{$this->key->name}?timestamp={$timestampToValidate}")
+        $this->json('GET', "api/key-value/{$this->dbKey->name}?timestamp={$timestampToValidate}")
             ->assertStatus(200)
-            ->assertJson(['result' => $keyValues[$indexToValidate]['value']]);   
+            ->assertJson(['result' => $dbKeyValues[$indexToValidate]['value']]);   
     }
 
     /**
      * Test to get value by random timestamp
      */
     public function testGetValueByTimestampAndKey() {
-        $keyValues = $this->key->values->toArray();
+        $dbKeyValues = $this->dbKey->values->toArray();
 
         // sort & get the value based on latest timestamp
-        $timestamps = array_column($keyValues, 'created_at');
-        array_multisort($timestamps, SORT_DESC, $keyValues);
+        $timestamps = array_column($dbKeyValues, 'created_at');
+        array_multisort($timestamps, SORT_DESC, $dbKeyValues);
 
         $indexToValidate = rand(0,2);
 
-        $timestampToValidate = strtotime("+1 minute", strtotime($keyValues[$indexToValidate]['created_at']));
+        $timestampToValidate = strtotime("+1 minute", strtotime($dbKeyValues[$indexToValidate]['created_at']));
 
-        $this->json('GET', "api/key-value/{$this->key->name}?timestamp={$timestampToValidate}")
+        $this->json('GET', "api/key-value/{$this->dbKey->name}?timestamp={$timestampToValidate}")
             ->assertStatus(200)
-            ->assertJson(['result' => $keyValues[$indexToValidate]['value']]);   
+            ->assertJson(['result' => $dbKeyValues[$indexToValidate]['value']]);   
     }
 }
