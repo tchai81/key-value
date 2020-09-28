@@ -25,7 +25,7 @@ class KeyRepository {
    */
     public function createVal($key, $val) {
         $key = $this->checkAndConvertKeyToModel($key);
-        // return $key->values()->create(['value' => $val]);
+        return $key->values()->create(['value' => $val]);
     }
 
    /**
