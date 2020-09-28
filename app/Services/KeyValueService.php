@@ -16,24 +16,24 @@ class KeyValueService {
 
     /**
      * Key value pair creation.
-     * @param string $mykey
-     * @param string timestamp
+     * @param String key required
+     * @param String val required
      * @return Illuminate\Database\Eloquent\Model;
      */
-    public function create($key, $value) {
+    public function create($key, $val) {
       $dbKey = $this->getByKey($key);
       if (!empty($dbKey)) {
-        return $this->repo->createVal($dbKey, $value);
+        return $this->repo->createVal($dbKey, $val);
       } 
-      return $this->repo->createWithVal($key, $value);
+      return $this->repo->createWithVal($key, $val);
     }
 
     /**
      * Get latest value assign for a given key or
      * Get value assign for a given key with provided timestamp
-     * @param string $mykey
-     * @param string timestamp
-     * @return string
+     * @param String key required
+     * @param String timestamp optional
+     * @return String
      */
     public function getVal($key, $timestamp) {
       $dbKey = $this->getByKey($key);
@@ -52,7 +52,7 @@ class KeyValueService {
 
     /**
      * Get key model based on a given name
-     * @param string $key
+     * @param String key required
      */
     private function getByKey($key) {
       return $this->repo->getByKey($key);
@@ -60,7 +60,7 @@ class KeyValueService {
 
     /**
      * Get latest value assign for a given key
-     * @param  string $mykey
+     * @param String key required
      * @return Illuminate\Database\Eloquent\Model;
      */
     private function getLatestValByKey($key) {
@@ -71,8 +71,8 @@ class KeyValueService {
 
     /**
      * Get value assign for a key based on a given timestamp
-     * @param string $key
-     * @param datetime $dateTime
+     * @param String key required
+     * @param datetime dateTime required
      * @return Illuminate\Database\Eloquent\Model;
      */
     private function getValByKeyAndDateTime($key, $dateTime) {

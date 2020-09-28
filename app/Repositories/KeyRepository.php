@@ -9,29 +9,28 @@ class KeyRepository {
 
    /**
    * Create a brand new key value pairs to db
-   * @param String  $key
-   * @param String  $value
+   * @param String key required
+   * @param String val required
    * @return Boolean
    */
-    public function createWithVal($key, $value) {
-        return Key::create(['name' => $key])->values()->create(['value' => $value]);
+    public function createWithVal($key, $val) {
+        return Key::create(['name' => $key])->values()->create(['value' => $val]);
     }
 
    /**
    * Create value for an existing key
-   * @param String $key
-   * @param Model $key
-   * @param String  $value
+   * @param Mixed key required
+   * @param String val required
    * @return Boolean
    */
-    public function createVal($key, $value) {
+    public function createVal($key, $val) {
         $key = $this->checkAndConvertKeyToModel($key);
-        return $key->values()->create(['value' => $value]);
+        return $key->values()->create(['value' => $val]);
     }
 
    /**
    * Retrieve key model from db based on a given name
-   * @param String  $key
+   * @param String key required
    * @return Illuminate\Database\Eloquent\Model;
    */
     public function getByKey($key) {
@@ -40,36 +39,35 @@ class KeyRepository {
 
    /**
    * Retrieve value model from db based on a given key
-   * @param String $key
-   * @param Model $key
+   * @param Mixed key required
    * @return Illuminate\Database\Eloquent\Model;
    */
     public function getLatestValByKey($key) {
         $key = $this->checkAndConvertKeyToModel($key);
         return $key->values()
-                    ->orderBy('created_at', 'DESC')
-                    ->orderBy('id', 'DESC')->first();
+                    ->latest('created_at')
+                    ->latest('id')
+                    ->first();
     }
 
    /**
    * Retrieve value model from db based on a given key & date (and time)
-   * @param String $key
-   * @param Model $key
-   * @param DateTime $dateTime
+   * @param Mixed key required
+   * @param DateTime dateTime required
    * @return Illuminate\Database\Eloquent\Model;
    */
     public function getValByKeyAndDateTime($key, $dateTime) {
         $key = $this->checkAndConvertKeyToModel($key);
         return $key->values()
                     ->where('created_at', '<=', $dateTime)
-                    ->orderBy('created_at', 'DESC')
-                    ->orderBy('id', 'DESC')->first();
+                    ->latest('created_at')
+                    ->latest('id')
+                    ->first();
     }
 
    /**
    * Convert a given key to a model only if it's string
-   * @param String $key
-   * @param Model $key
+   * @param Mixed key required
    * @return Illuminate\Database\Eloquent\Model;
    */
     private function checkAndConvertKeyToModel($key) {

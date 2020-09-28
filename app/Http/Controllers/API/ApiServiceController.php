@@ -17,7 +17,7 @@ class ApiServiceController extends Controller {
     }
 
     /**
-     * @param mixed $statusCode
+     * @param mixed statusCode required
      *
      * @return self
      */
@@ -29,7 +29,7 @@ class ApiServiceController extends Controller {
 
     /**
      * Respond with not found message
-     * @param  string $message
+     * @param  string message optional
      * @return Illuminate\Support\Facades\Response
      */
     public function respondNotFound($message = 'Not Found!') {
@@ -38,7 +38,7 @@ class ApiServiceController extends Controller {
 
     /**
      * Respond with not authorized message
-     * @param  string $message
+     * @param  string message optional
      * @return Illuminate\Support\Facades\Response
      */
     public function respondForbidden($message = 'Not Authorized!') {
@@ -46,8 +46,17 @@ class ApiServiceController extends Controller {
     }
 
     /**
+     * Respond with not authorized message
+     * @param  string message optional
+     * @return Illuminate\Support\Facades\Response
+     */
+    public function respondUnprocessedEntity($message = 'Unprocessed Entity!') {
+        return $this->setStatusCode(422)->respondWithMessage($message);
+    }
+
+    /**
      * Respond with designated error message
-     * @param  String $message
+     * @param  String message required
      * @return Illuminate\Support\Facades\Response
      */
     public function respondWithMessage($message) {
@@ -58,8 +67,8 @@ class ApiServiceController extends Controller {
 
     /**
      * Construct json structure to be returned
-     * @param  array $data
-     * @param  array  $headers
+     * @param  array data required
+     * @param  array headers optional
      * @return Illuminate\Support\Facades\Response
      */
     public function respondWithJson($data, $headers = []) {

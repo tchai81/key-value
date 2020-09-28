@@ -4,6 +4,11 @@ namespace App\Traits;
 
 trait CustomValidator {
 
+  /**
+   * To validate key value creation payload
+   * @param Array payload required
+   * @return Boolean
+   */
   public function isCreatePayloadValid($payload) {
     $error = false;
     if (empty($payload)) {
