@@ -51,7 +51,7 @@ $ php artisan key:generate
 6.  Update APP_KEY attribute in .env file with relevant key
 7.  Create a MySQL database on your local and state down all details
 8.  Make necessary changes to .env
-9.  Execute database migration by navigating to <folder-name>\src
+9.  Execute database migration
 
 ```bash
 $  php artisan migrate
