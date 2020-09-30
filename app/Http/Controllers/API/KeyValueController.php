@@ -45,7 +45,10 @@ class KeyValueController extends ApiServiceController {
     if (empty(trim($key))) {
       return $this->respondUnprocessedEntity('Key cannot be empty.');
     } else {
-      $timestamp = Request::get('timestamp');
+      $timestamp = Request::get('timestamp');     
+      if (!empty($timestamp) && !$this->isValidTimeStamp($timestamp)) {
+        return $this->respondUnprocessedEntity('Invalid timestamp.');
+      }
       $val = $this->service->getVal($key, $timestamp);
       if (!empty($val)) {
         return $this->respondWithJson(['result' => $val]);

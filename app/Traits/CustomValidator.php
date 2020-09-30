@@ -23,5 +23,18 @@ trait CustomValidator {
     }
     return $error;
   }
-  
+
+  /**
+   * To validate whether a string is a valid timestamp
+   * Taken from: 
+   * https://stackoverflow.com/questions/2524680/check-whether-the-string-is-a-unix-timestamp
+   * @param String $timestamp required
+   * @return Boolean
+   */
+  public function isValidTimeStamp($timestamp) {
+    return ((string) (int) $timestamp === $timestamp) 
+        && ($timestamp <= PHP_INT_MAX)
+        && ($timestamp >= ~PHP_INT_MAX);
+  }
+   
 }

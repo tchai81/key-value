@@ -117,4 +117,16 @@ class KeyValueGetTest extends TestCase {
             ->assertStatus(200);
 
     }
+
+    /**
+     * Test whether provided timestamp is valid
+     */
+    public function testGetValueByInvalidTimestampAndKey() {
+        $this->json('GET', "api/key-value/{$this->dbKey->name}?timestamp=abcde123456")
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => "Invalid timestamp."
+            ]);            
+
+    }    
 }
