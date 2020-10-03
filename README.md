@@ -77,4 +77,7 @@ $ /vendor/bin/phpunit
 ## Constraints & Assumptions
 
 1. Creation payload only accept a key value pair. 
-2. Currently having issues with post deployment script as debugging is very tedious. Changes to codebase may not be reflected on hosting server after deployment depends on what you've changed. It certainly can be fixed but i'll leave it for now due to time constaint. 
+2. ~~Currently having issues with post deployment script as debugging is very tedious. Changes to codebase may not be reflected on hosting server after deployment depends on what you've changed. It certainly can be fixed but i'll leave it for now due to time constaint. ~~
+3. Added post deployment script but still have issues. Post deployment script don't work most likely due to AWS free tier limited memory capacity. The following doesn't work:-
+- Database migration script 
+- Installing new depencies through composer update
