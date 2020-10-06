@@ -29,8 +29,12 @@ class KeyValueController extends ApiServiceController {
     } else {
       $key = array_keys($payload)[0];
       list($key => $val) = $payload;
-      $status = $this->service->create($key, $val);
-      return $this->respondWithJson(['created' => $status]);
+      $keyVal = $this->service->create($key, $val);
+      return $this->respondWithJson(
+        ['created' => [
+          'key' => $keyVal->value,
+          'unixtimestamp' => strtotime($keyVal->created_at)
+        ]]);
     }
   }
 
